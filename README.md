@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 코드잇 과제
 
-## Getting Started
+## 1. 사용 기술
 
-First, run the development server:
+- **Next.js 15 (App Router)**
+- **TypeScript**
+- **Tailwind CSS v4**
+- **TanStack Query v5**
+- **REST API**
+- **Vercel 배포**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 2. 프로젝트 구조
+
+```
+src/
+├─ app/
+│  ├─ layout.tsx         # 전역 레이아웃
+│  └─ page.tsx           # 루트 페이지
+├─ features/
+│  └─ items/
+│     ├─ api/
+│     │  ├─ client.ts    # fetch 래퍼
+│     │  └─ queries.ts   # TanStack Query 훅
+│     └─ types.ts        # Item 타입 정의
+├─ shared/
+│  └─ providers/
+│     └─ QueryProvider.tsx
+└─ styles/
+   └─ globals.css        # Tailwind + 디자인 토큰
+public/
+  images/                # 정적 이미지 리소스
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 3. 시작하기
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3.1 클론 & 의존성 설치
 
-## Learn More
+```bash
+git clone https://github.com/yourname/todo-list.git
+cd todo-list
+yarn install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3.2 환경 변수 설정
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+프로젝트 루트에 `.env.local` 생성:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://assignment-todolist-api.vercel.app/api
+NEXT_PUBLIC_TENANT_ID=your-tenant-id   # 본인 식별자 (닉네임/아이디)
+```
 
-## Deploy on Vercel
+### 3.3 개발 서버 실행
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+yarn dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+→ 브라우저에서 `http://localhost:3000` 접속
+
+### 3.4 빌드 & 시작
+
+```bash
+yarn build
+yarn start
+```
+
+---
+
+## 4. 디자인 시스템
+
+### 4.1 컬러
+
+- 의미 기반 토큰: `bg-surface`, `text-text`, `bg-primary`, `text-danger`, `text-success` …
+- Tailwind v4 `@theme`로 정의한 CSS 변수 사용
+
+### 4.2 폰트
+
+- **NanumSquare** 폰트 적용
+- `@theme`에서 `--font-nanum`, `--text-xl/lg/base` 등 정의
+- Tailwind 유틸: `text-xl font-bold`, `text-base font-normal` 등
+
+---
