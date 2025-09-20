@@ -1,5 +1,7 @@
 "use client";
 
+import { Icontest } from "./Icontest";
+
 export default function Page() {
   return (
     <main className="mx-auto max-w-md p-6 space-y-4">
@@ -23,6 +25,7 @@ export default function Page() {
           amber/800
         </span>
       </div>
+      <Icontest />
     </main>
   );
 }

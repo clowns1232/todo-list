@@ -24,13 +24,20 @@ src/
 │     │  ├─ client.ts    # fetch 래퍼
 │     │  └─ queries.ts   # TanStack Query 훅
 │     └─ types.ts        # Item 타입 정의
+├─ components/
+│  └─ shared/
+│     ├─ Icon.tsx        # 공용 아이콘 컴포넌트
+│     ├─ icons.ts        # 아이콘 이름 & alt 매핑
+│     ├─ AppImage.tsx    # 공용 이미지 컴포넌트
+│     └─ images.ts       # 이미지 이름 & alt 매핑
 ├─ shared/
 │  └─ providers/
 │     └─ QueryProvider.tsx
 └─ styles/
    └─ globals.css        # Tailwind + 디자인 토큰
 public/
-  images/                # 정적 이미지 리소스
+  icons/                 # 정적 아이콘 리소스 (PNG/SVG)
+  images/                # 정적 이미지 리소스 (로고, empty-state 등)
 ```
 
 ---
@@ -85,3 +92,25 @@ yarn start
 - Tailwind 유틸: `text-xl font-bold`, `text-base font-normal` 등
 
 ---
+
+## 5. 이미지 & 아이콘
+
+### 5.1 아이콘 (public/icons)
+
+- `checkbox-empty.png`
+- `checkbox-checked.png`
+- `plus-sm.png`
+- `plus-lg.png`
+- `check.png`
+- `close.png`
+- `edit.png`
+
+### 5.2 이미지 (public/images)
+
+- `logo.png` / `logo-mark.png`
+- `todo.png` / `done.png` / `memo.png`
+- `empty-writing-sm.png` / `empty-writing-lg.png`
+- `empty-sweat-sm.png` / `empty-sweat-lg.png`
+- `searchbar.png` / `image.png`
+
+→ 공용 컴포넌트 `Icon`, `AppImage`와 상수(`ICONS`, `IMAGES`)로 관리
