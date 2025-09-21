@@ -1,6 +1,6 @@
 export const IMAGES = {
   LOGO: "logo",
-  LOGO_MARK: "logo-mark",
+  LOGO_DOIT: "logo-doit",
 
   TODO: "todo",
   DONE: "done",
@@ -19,7 +19,7 @@ export type ImageName = (typeof IMAGES)[keyof typeof IMAGES];
 
 export const IMAGE_ALTS: Record<ImageName, string> = {
   logo: "Do It 로고",
-  "logo-mark": "Do It 심볼 로고",
+  "logo-doit": "Do It 심볼 로고",
 
   todo: "할 일",
   done: "완료됨",

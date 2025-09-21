@@ -2,6 +2,7 @@ import React from "react";
 import { ColorDemo } from "./ColorDemo";
 import { IconDemo } from "./IconDemo";
 import ButtonDemo from "./ButtonDemo";
+import GnbDemo from "./GnbDemo";
 
 const Index = () => {
   return (
@@ -9,6 +10,7 @@ const Index = () => {
       <ColorDemo />
       <IconDemo />
       <ButtonDemo />
+      <GnbDemo />
     </div>
   );
 };
