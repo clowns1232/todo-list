@@ -154,6 +154,7 @@ export const BasicButton = forwardRef<HTMLButtonElement, Props>(
           boxShadow: `${shadowX}px ${shadowY}px ${shadowBlur}px ${shadowSpread}px ${shadowColor}`,
 
           // 라운드
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ["--btn-radius" as any]: resolvedRadius,
 
           // 타이포 (직접값 우선)

@@ -2,8 +2,8 @@
 
 import { CheckListDetailItem } from "@/components/shared/check/CheckListDetailItem";
 import { CheckListItem } from "@/components/shared/check/CheckListItem";
+import { SearchField } from "@/components/shared/inputs/SearchField";
 import { useState } from "react";
-import { SearchField } from "./ButtonDemo";
 
 export default function ChecklistSearchDemo() {
   const [a, setA] = useState(false);
@@ -22,8 +22,8 @@ export default function ChecklistSearchDemo() {
       <section className="p-4 rounded-lg border border-dashed border-violet-500/60">
         <h3 className="text-violet-400 mb-3">❖ check-list</h3>
         <div className="space-y-3 max-w-xl">
-          <CheckListItem label="비타민 챙겨 먹기" checked={a} onChange={setA} />
-          <CheckListItem label="비타민 챙겨 먹자" checked={b} onChange={setB} />
+          <CheckListItem label="비타민 챙겨 먹기" checked={a} onToggle={setA} />
+          <CheckListItem label="비타민 챙겨 먹자" checked={b} onToggle={setB} />
         </div>
       </section>
 
