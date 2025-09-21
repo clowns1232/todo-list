@@ -1,3 +1,4 @@
+// src/components/shared/gnb/GNB.tsx
 "use client";
 
 import React, { useId, useState } from "react";
@@ -210,11 +211,25 @@ export function GNB({
                 )
               )}
             </div>
+
+            {/* Mobile menu toggle */}
+            <button
+              type="button"
+              className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-slate-900)] bg-[var(--color-slate-100)]"
+              aria-controls={menuId}
+              aria-expanded={open}
+              aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <span className="text-[var(--color-slate-900)] text-[12px] font-[var(--font-weight-bold)]">
+                {open ? "닫기" : "메뉴"}
+              </span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile panel */}
+      {/* Mobile panel (same centered container as top bar) */}
       <div
         id={menuId}
         className={clsx(
@@ -222,7 +237,7 @@ export function GNB({
           open ? "block" : "hidden"
         )}
       >
-        <div className="mx-auto px-4 py-3 space-y-2">
+        <div className={clsx("mx-auto px-4 py-3 space-y-2", maxWMap[maxW])}>
           {links.map((l) => (
             <Link
               key={l.href + l.label}

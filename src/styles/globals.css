@@ -16,6 +16,9 @@
   --color-rose-500: #f43f5e;
   --color-lime-300: #bef264;
   --color-amber-800: #92400e;
+
+  --color-amber-300: #fcd34d;
+  --color-green-600: #16a34a;
 }
 
 @theme {

@@ -4,6 +4,8 @@ export const IMAGES = {
 
   TODO: "todo",
   DONE: "done",
+  TODO_LABEL: "todo-label",
+  DONE_LABEL: "done-label",
   MEMO: "memo",
 
   EMPTY_WRITING_SM: "empty-writing-sm",
@@ -23,6 +25,8 @@ export const IMAGE_ALTS: Record<ImageName, string> = {
 
   todo: "할 일",
   done: "완료됨",
+  "todo-label": "할 일 라벨",
+  "done-label": "완료됨 라벨",
   memo: "메모",
 
   "empty-writing-sm": "비어있음 - 글쓰기(작은)",

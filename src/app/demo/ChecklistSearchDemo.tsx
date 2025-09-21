@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckListItem } from "@/components/shared/check/CheckListItem";
 import { CheckListDetailItem } from "@/components/shared/check/CheckListDetailItem";
-import { SearchField } from "@/components/shared/input/SearchField";
+import { SearchField } from "@/components/shared/inputs/SearchField";
 
 export default function ChecklistSearchDemo() {
   const [a, setA] = useState(false);

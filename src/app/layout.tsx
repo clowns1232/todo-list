@@ -1,15 +1,31 @@
-import "./../styles/globals.css";
-import QueryProvider from "@/shared/providers/QueryProvider";
+import "../styles/globals.css";
+import type { ReactNode } from "react";
+import { GNB } from "@/components/shared/gnb";
+import { IMAGES } from "@/components/shared/image";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const metadata = { title: "do it;" };
+
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
-        <QueryProvider>{children}</QueryProvider>
+        <GNB
+          brand={{
+            image: {
+              name: IMAGES.LOGO_DOIT,
+              width: 151,
+              height: 40,
+              priority: true,
+            },
+            href: "/",
+          }}
+          links={[]}
+          sticky
+          maxW="xl"
+        />
+        <main className="mx-auto max-w-screen-xl px-4 md:px-6 lg:px-8 py-8">
+          {children}
+        </main>
       </body>
     </html>
   );

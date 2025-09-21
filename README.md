@@ -107,7 +107,7 @@ yarn start
 
 ### 5.2 이미지 (public/images)
 
-- `logo.png` / `logo-mark.png`
+- `logo.png` / `logo-doit.png`
 - `todo.png` / `done.png` / `memo.png`
 - `empty-writing-sm.png` / `empty-writing-lg.png`
 - `empty-sweat-sm.png` / `empty-sweat-lg.png`
