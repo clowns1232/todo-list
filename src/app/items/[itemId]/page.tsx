@@ -85,6 +85,10 @@ export default function ItemDetailPage() {
           key={id}
           label={name}
           checked={isCompleted}
+          onToggle={() => {
+            setIsCompleted(!isCompleted);
+          }}
+          onLabelChange={setName}
           disabled={toggleCompleted.isPending}
         />
       </div>

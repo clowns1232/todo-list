@@ -13,11 +13,14 @@ type Props = {
   autoFocus?: boolean;
   readOnlyDisplay?: boolean;
   /** 하드 섀도우 */
-  shadowX?: number; // 기본 0
-  shadowY?: number; // 기본 0
-  shadowBlur?: number; // 기본 0
-  shadowSpread?: number; // 기본 0
-  shadowColor?: string; // 기본 var(--color-slate-900)
+  shadowX?: number;
+  shadowY?: number;
+  shadowBlur?: number;
+  shadowSpread?: number;
+  shadowColor?: string;
+
+  /** ✅ 엔터 이벤트 콜백 */
+  onEnter?: () => void;
 };
 
 export function SearchField({
@@ -34,6 +37,8 @@ export function SearchField({
   shadowBlur = 0,
   shadowSpread = 0,
   shadowColor = "var(--color-slate-900)",
+
+  onEnter,
 }: Props) {
   const id = useId();
   const h = size === "lg" ? "h-14" : "h-12";
@@ -46,10 +51,8 @@ export function SearchField({
         className={clsx(
           "w-full rounded-[999px] border-2 box-border px-5",
           h,
-          // ✅ 배경 slate/100 & 보더 slate/900
           "bg-[var(--color-slate-100)] border-[var(--color-slate-900)]",
           "flex items-center",
-          // 16 / Regular / 100%
           "text-[var(--text-base)] font-[var(--font-weight-regular)] leading-[1]",
           "text-[var(--color-slate-900)]",
           className
@@ -79,6 +82,12 @@ export function SearchField({
         type="text"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault(); // 폼 submit 방지
+            onEnter?.();
+          }
+        }}
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={clsx(

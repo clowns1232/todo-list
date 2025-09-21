@@ -12,7 +12,6 @@ import {
 } from "@/features/items/api/queries";
 import { CheckListItem } from "@/components/shared/check/CheckListItem";
 import { useCreateItem } from "@/features/items/api/mutations";
-import Link from "next/link";
 
 const LABEL_BY_TONE = {
   todo: IMAGES.TODO_LABEL,
@@ -59,6 +58,10 @@ export default function HomePage() {
               shadowY={3}
               shadowBlur={0}
               shadowColor="rgba(15,23,42,1)"
+              onEnter={() => {
+                if (createItem.isPending) return;
+                onAdd();
+              }}
             />
           </div>
 
