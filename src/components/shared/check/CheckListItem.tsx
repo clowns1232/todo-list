@@ -1,80 +1,119 @@
 "use client";
 
 import clsx from "clsx";
+import Link from "next/link";
 import { Icon } from "@/components/shared/icon/Icon";
 import type { IconName } from "@/components/shared/icon/icons";
 
 type Props = {
   label: string;
+
+  /** 완료 상태 */
   checked?: boolean;
-  onChange?: (next: boolean) => void;
+
+  /** 🔘 왼쪽 토글 버튼 클릭 (isCompleted 토글) */
+  onToggle?: (next: boolean) => void;
+
+  /** 📝 본문(라벨) 클릭: href 없을 때 호출 */
+  onBodyClick?: () => void;
+
+  /** 🧭 본문 클릭 시 이동할 경로. 지정 시 Link로 이동 */
+  href?: string;
+
   disabled?: boolean;
   className?: string;
 
-  /** ✅ 너비: px 또는 퍼센트 (예: 320, "320px", "80%") */
+  /** 커스텀 너비 (px | %) — 미지정 시 w-full */
   width?: number | string;
 };
 
 export function CheckListItem({
   label,
   checked = false,
-  onChange,
+  onToggle,
+  onBodyClick,
+  href,
   disabled,
   className,
-  width = "100%", // 기본은 꽉 차게
+  width,
 }: Props) {
-  const styleWidth = typeof width === "number" ? `${width}px` : width;
+  const styleWidth =
+    width !== undefined
+      ? typeof width === "number"
+        ? `${width}px`
+        : width
+      : undefined;
+
+  const containerClasses = clsx(
+    "flex w-full items-center gap-3 px-4 rounded-[999px] border-2 box-border",
+    checked ? "bg-[var(--color-violet-100)]" : "bg-[#FFF]",
+    "border-[var(--color-slate-900)]",
+    disabled && "opacity-60 cursor-not-allowed",
+    className
+  );
+
+  const labelClasses = clsx(
+    "flex-1 min-w-0 truncate text-left",
+    "text-[var(--text-base)] font-[var(--font-weight-regular)]",
+    "text-[var(--color-slate-800)]",
+    checked && "line-through decoration-2"
+  );
 
   return (
-    <button
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
-      disabled={disabled}
-      onClick={() => !disabled && onChange?.(!checked)}
-      className={clsx(
-        // 컨테이너: 흰 배경 + 캡슐 + 보더 + 높이 50px
-        "inline-flex items-center gap-3 px-4 rounded-[999px] border-2 box-border",
-        "bg-white border-[var(--color-slate-900)] leading-[1]",
-        disabled && "opacity-60 cursor-not-allowed",
-        className
-      )}
+    <div
+      className={containerClasses}
       style={{
-        width: styleWidth, // ✅ 퍼센트/px 모두 지원
-        height: 50, // ✅ 고정 높이 50px (border 포함)
+        ...(styleWidth ? { width: styleWidth } : {}),
+        height: 50,
       }}
     >
-      {/* 인디케이터: 32px 원형 */}
-      <span
+      {/* 🔘 토글 버튼(왼쪽 원형) */}
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={checked}
+        disabled={disabled}
+        onClick={() => !disabled && onToggle?.(!checked)}
         className={clsx(
           "shrink-0 inline-flex items-center justify-center rounded-full",
           checked
             ? "bg-[var(--color-violet-600)] border-[var(--color-violet-600)]"
-            : "bg-[#FEFCE8] border-[var(--color-slate-900)]" // yellow/50
+            : "bg-[#FEFCE8] border-[var(--color-slate-900)]"
         )}
         style={{ width: 32, height: 32, borderWidth: 2 }}
-        aria-hidden
+        aria-label={checked ? "완료 해제" : "완료로 표시"}
       >
         {checked && (
           <Icon name={"check" as IconName} size={18} color="#fff" alignY={-1} />
         )}
-      </span>
+      </button>
 
-      {/* 라벨: 16/Regular, slate-800, 체크 시 취소선 */}
-      <span
-        className={clsx(
-          "truncate",
-          "text-[var(--text-base)] font-[var(--font-weight-regular)]",
-          "text-[var(--color-slate-800)]",
-          checked && "line-through decoration-2"
-        )}
-        style={{
-          textDecorationColor: "var(--color-slate-800)",
-          lineHeight: "18px",
-        }}
-      >
-        {label}
-      </span>
-    </button>
+      {/* 📝 본문(라벨) 클릭: href 우선, 없으면 onBodyClick */}
+      {href ? (
+        <Link href={href} className={labelClasses} title={label}>
+          <span
+            style={{
+              textDecorationColor: "var(--color-slate-800)",
+              lineHeight: "18px",
+            }}
+          >
+            {label}
+          </span>
+        </Link>
+      ) : (
+        <button
+          type="button"
+          className={labelClasses}
+          style={{
+            textDecorationColor: "var(--color-slate-800)",
+            lineHeight: "18px",
+          }}
+          onClick={() => !disabled && onBodyClick?.()}
+          aria-label="항목 상세"
+        >
+          {label}
+        </button>
+      )}
+    </div>
   );
 }

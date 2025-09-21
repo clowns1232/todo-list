@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { CheckListItem } from "@/components/shared/check/CheckListItem";
 import { CheckListDetailItem } from "@/components/shared/check/CheckListDetailItem";
-import { SearchField } from "@/components/shared/inputs/SearchField";
+import { CheckListItem } from "@/components/shared/check/CheckListItem";
+import { useState } from "react";
+import { SearchField } from "./ButtonDemo";
 
 export default function ChecklistSearchDemo() {
   const [a, setA] = useState(false);

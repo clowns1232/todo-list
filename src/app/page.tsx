@@ -6,6 +6,12 @@ import { AppImage } from "@/components/shared/image/AppImage";
 import { IMAGES } from "@/components/shared/image";
 import { ICONS } from "@/components/shared/icon";
 import { SearchField } from "@/components/shared/inputs/SearchField";
+import {
+  useItemsQuery,
+  useToggleCompleted,
+} from "@/features/items/api/queries";
+import { CheckListItem } from "@/components/shared/check/CheckListItem";
+import { useCreateItem } from "@/features/items/api/mutations";
 
 const LABEL_BY_TONE = {
   todo: IMAGES.TODO_LABEL,
@@ -14,6 +20,29 @@ const LABEL_BY_TONE = {
 
 export default function HomePage() {
   const [q, setQ] = useState("");
+
+  const { data: itemList = [], isLoading } = useItemsQuery();
+  const createItem = useCreateItem();
+  const toggleCompleted = useToggleCompleted();
+
+  const onAdd = () => {
+    const name = q.trim();
+    if (!name) return;
+
+    createItem.mutate(
+      {
+        name,
+      },
+      { onSuccess: () => setQ("") }
+    );
+  };
+
+  const todos = itemList.filter((it) => !it.isCompleted); // 진행 중
+  const dones = itemList.filter((it) => it.isCompleted); // 완료
+
+  if (isLoading || toggleCompleted.isPending || createItem.isPending) {
+    return <div>목록 불러오는 중…</div>;
+  }
 
   return (
     <>
@@ -45,8 +74,10 @@ export default function HomePage() {
               shadowY={3}
               shadowBlur={0}
               shadowSpread={0}
+              onClick={() => {
+                onAdd();
+              }}
             >
-              {/* 👇 모바일(<375px)에서는 텍스트 숨김, sm(≥375px)부터 보임 */}
               <span className="hidden sm:inline">추가하기</span>
             </BasicButton>
           </div>
@@ -54,16 +85,67 @@ export default function HomePage() {
       </section>
       <section className="mx-auto w-full px-4 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <EmptyBlock
-            chipTone="todo"
-            image={IMAGES.EMPTY_WRITING_LG}
-            message={"할 일이 없어요.\nTODO에 새로운 항목을 추가해보세요"}
-          />
-          <EmptyBlock
-            chipTone="done"
-            image={IMAGES.EMPTY_SWEAT_LG}
-            message={"아직 완료 없음.\n완료된 항목은 여기에 표시됩니다"}
-          />
+          {/* TODO */}
+          <div className="flex flex-col rounded-2xl gap-5">
+            <AppImage
+              name={IMAGES.TODO_LABEL}
+              className="mt-6 opacity-90 self-start"
+            />
+            {todos.length > 0 ? (
+              <div className="space-y-3">
+                {todos.map((it) => (
+                  <CheckListItem
+                    key={it.id}
+                    label={it.name}
+                    checked={false}
+                    onToggle={() => {
+                      toggleCompleted.mutate(it);
+                    }}
+                    disabled={toggleCompleted.isPending}
+
+                    // 상세로 이동하고 싶으면 아래처럼 래핑 가능
+                    // renderRight={() => <Link href={`/items/${it.id}`}>상세</Link>}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyBlock
+                chipTone="todo"
+                image={IMAGES.EMPTY_WRITING_LG}
+                message={"할 일이 없어요.\nTODO에 새로운 항목을 추가해보세요"}
+              />
+            )}
+          </div>
+
+          {/* DONE */}
+          <div className="flex flex-col rounded-2xl gap-5">
+            <AppImage
+              name={IMAGES.DONE_LABEL}
+              className="mt-6 opacity-90 self-start"
+            />
+
+            {dones.length > 0 ? (
+              <div className="space-y-3">
+                {dones.map((it) => (
+                  <CheckListItem
+                    key={it.id}
+                    label={it.name}
+                    checked
+                    onToggle={() => {
+                      toggleCompleted.mutate(it);
+                    }}
+                    disabled={toggleCompleted.isPending}
+                  />
+                ))}
+              </div>
+            ) : (
+              <EmptyBlock
+                chipTone="done"
+                image={IMAGES.EMPTY_SWEAT_LG}
+                message={"아직 완료 없음.\n완료된 항목은 여기에 표시됩니다"}
+              />
+            )}
+          </div>
         </div>
       </section>
     </>
@@ -71,7 +153,6 @@ export default function HomePage() {
 }
 
 function EmptyBlock({
-  chipTone,
   image,
   message,
 }: {
@@ -80,12 +161,7 @@ function EmptyBlock({
   message: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl">
-      <AppImage
-        name={LABEL_BY_TONE[chipTone]}
-        priority
-        className="mt-6 opacity-90 self-start"
-      />
+    <>
       <AppImage
         name={image}
         width={240}
@@ -96,6 +172,6 @@ function EmptyBlock({
       <p className="mt-4 text-center ty-base-r text-[var(--color-slate-500)] whitespace-pre-line break-keep">
         {message}
       </p>
-    </div>
+    </>
   );
 }
