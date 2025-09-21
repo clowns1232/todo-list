@@ -1,6 +1,5 @@
-// src/components/shared/AppImage.tsx
 import Image from "next/image";
-import { IMAGE_ALTS, ImageName } from "./imageType";
+import { IMAGE_ALTS, ImageName } from "./image";
 
 type AppImageProps = {
   name: ImageName;

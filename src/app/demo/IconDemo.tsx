@@ -1,6 +1,6 @@
-import { Icon } from "@/components/shared/Icon";
+import { Icon } from "@/components/shared/icon/Icon";
 
-export function Icontest() {
+export function IconDemo() {
   return (
     <div className="flex items-center gap-2">
       <Icon name="check" size={24} alt="체크박스 꺼짐" />

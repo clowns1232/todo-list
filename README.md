@@ -114,3 +114,7 @@ yarn start
 - `searchbar.png` / `image.png`
 
 → 공용 컴포넌트 `Icon`, `AppImage`와 상수(`ICONS`, `IMAGES`)로 관리
+
+## 6. 버튼 추가 및 데모 추가
+
+- src/app/demo에 버튼 및 아이콘 사용하는 컴포넌트 추가
