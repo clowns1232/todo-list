@@ -72,26 +72,6 @@ const maxWMap = {
   full: "max-w-full",
 } as const;
 
-/** 햄버거 아이콘 (내장 SVG/CSS, 프로젝트 아이콘 PNG가 없어도 동작) */
-function HamburgerIcon({ open }: { open: boolean }) {
-  return (
-    <span
-      aria-hidden
-      className={clsx(
-        "relative block w-5 h-5",
-        "[&_*]:absolute [&_*]:left-0 [&_*]:h-[2px] [&_*]:w-full [&_*]:bg-current",
-        "[&_*]:transition-transform [&_*]:duration-200"
-      )}
-    >
-      <i className={clsx("top-[3px]", open && "translate-y-[7px] rotate-45")} />
-      <i className={clsx("top-[9px]", open && "scale-0")} />
-      <i
-        className={clsx("top-[15px]", open && "-translate-y-[7px] -rotate-45")}
-      />
-    </span>
-  );
-}
-
 /** ----------------------------------------------------------------
  *  Component
  *  ---------------------------------------------------------------- */
@@ -230,16 +210,6 @@ export function GNB({
                 )
               )}
             </div>
-
-            {/* Mobile toggle */}
-            <button
-              aria-controls={menuId}
-              aria-expanded={open}
-              onClick={() => setOpen((v) => !v)}
-              className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-[var(--color-slate-900)]"
-            >
-              <HamburgerIcon open={open} />
-            </button>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { Icon } from "@/components/shared/icon/Icon";
 import { IconName } from "@/components/shared/icon/icons";
 
 type FontSizeToken = "sm" | "base" | "lg" | "xl";
-type FontWeightToken = "regular" | "bold";
+type FontWeightToken = "regular" | "bold" | "extrabold";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   bg?: string;

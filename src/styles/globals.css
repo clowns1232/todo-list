@@ -19,16 +19,19 @@
 }
 
 @theme {
+  /* Font family */
   --font-nanum: "NanumSquare", sans-serif;
 
+  /* Size */
   --text-xl: 20px;
   --text-lg: 18px;
   --text-base: 16px;
   --text-sm: 14px;
 
-  /* === Font Weights === */
-  --font-weight-bold: 700;
+  /* Weight */
   --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800; /* ✅ 추가 */
 }
 
 html,
@@ -37,4 +40,35 @@ body {
   color: var(--color-text);
   font-family: var(--font-nanum);
   font-size: var(--text-base);
+}
+
+@utility ty-title-xl {
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: 0;
+}
+@utility ty-title-lg {
+  font-size: var(--text-lg);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: 0;
+}
+@utility ty-base-xb {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-extrabold);
+  line-height: 1;
+  letter-spacing: 0;
+}
+@utility ty-base-b {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  letter-spacing: 0;
+}
+@utility ty-base-r {
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-regular);
+  line-height: 1;
+  letter-spacing: 0;
 }

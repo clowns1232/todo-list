@@ -1,4 +1,4 @@
-import { GNB } from "@/components/shared/gnb/Gnb";
+import { GNB } from "@/components/shared/gnb";
 import React from "react";
 
 const GnbDemo = () => {
