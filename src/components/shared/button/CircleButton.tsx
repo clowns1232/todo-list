@@ -7,21 +7,30 @@ import { IconName } from "@/components/shared/icon/icons";
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   /** 지름 */
-  size?: number | string; // 56 | "3rem"
-  /** 배경색 (CSS 값) */
-  bgColor?: string; // 예: "var(--color-slate-100)" | "#111827"
-  /** 보더 */
-  borderColor?: string; // 예: "var(--color-slate-900)"
-  borderWidth?: number | string; // 2 | "1.5px"
+  size?: number | string;
+  /** 배경/보더 */
+  bgColor?: string;
+  borderColor?: string;
+  borderWidth?: number | string;
   borderStyle?: "solid" | "dashed" | "dotted";
   /** 아이콘 */
   iconName: IconName;
-  iconSize?: number | string; // 기본 "50%" (버튼 지름 대비)
-  iconColor?: string; // 예: "#fff" | "currentColor"
-  iconAlignY?: number; // PNG 여백 미세 보정(px)
+  iconSize?: number | string;
+  iconColor?: string;
+  iconAlignY?: number;
   /** 접근성 */
   ariaLabel?: string;
+
+  /** ✅ 위치 제어(필요 시 절대배치로) */
+  absolute?: boolean;
+  top?: number | string;
+  right?: number | string;
+  bottom?: number | string;
+  left?: number | string;
 };
+
+const toCss = (v?: number | string) =>
+  v === undefined ? undefined : typeof v === "number" ? `${v}px` : v;
 
 export const CircleButton = forwardRef<HTMLButtonElement, Props>(
   (
@@ -40,6 +49,14 @@ export const CircleButton = forwardRef<HTMLButtonElement, Props>(
 
       type = "button",
       ariaLabel,
+
+      // ✅ 위치 관련
+      absolute,
+      top,
+      right,
+      bottom,
+      left,
+
       ...rest
     },
     ref
@@ -52,8 +69,9 @@ export const CircleButton = forwardRef<HTMLButtonElement, Props>(
         type={type}
         aria-label={ariaLabel}
         className={clsx(
-          "relative inline-flex items-center justify-center leading-[1]",
-          "focus:outline-none disabled:opacity-60 disabled:cursor-not-allowed box-border",
+          "inline-flex items-center justify-center leading-[1] box-border focus:outline-none",
+          "disabled:opacity-60 disabled:cursor-not-allowed",
+          absolute ? "absolute" : "relative",
           className
         )}
         style={{
@@ -64,6 +82,11 @@ export const CircleButton = forwardRef<HTMLButtonElement, Props>(
           borderColor,
           borderWidth,
           borderStyle,
+          // ✅ 절대배치 좌표
+          top: toCss(top),
+          right: toCss(right),
+          bottom: toCss(bottom),
+          left: toCss(left),
         }}
         {...rest}
       >

@@ -1,30 +1,26 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Icon } from "@/components/shared/icon/Icon";
 import type { IconName } from "@/components/shared/icon/icons";
 
 type Props = {
   label: string;
-
-  /** 완료 상태 */
   checked?: boolean;
 
-  /** 🔘 왼쪽 토글 버튼 클릭 (isCompleted 토글) */
+  /** 🔘 토글(왼쪽 원형) 클릭 */
   onToggle?: (next: boolean) => void;
 
-  /** 📝 본문(라벨) 클릭: href 없을 때 호출 */
+  /** 📝 본문 클릭(루트 div 클릭) - href 없을 때 호출 */
   onBodyClick?: () => void;
 
-  /** 🧭 본문 클릭 시 이동할 경로. 지정 시 Link로 이동 */
+  /** 🧭 본문 클릭 시 이동 경로. 지정되면 router.push(href) */
   href?: string;
 
   disabled?: boolean;
   className?: string;
-
-  /** 커스텀 너비 (px | %) — 미지정 시 w-full */
-  width?: number | string;
+  width?: number | string; // 미지정 시 w-full
 };
 
 export function CheckListItem({
@@ -37,6 +33,8 @@ export function CheckListItem({
   className,
   width,
 }: Props) {
+  const router = useRouter();
+
   const styleWidth =
     width !== undefined
       ? typeof width === "number"
@@ -45,7 +43,7 @@ export function CheckListItem({
       : undefined;
 
   const containerClasses = clsx(
-    "flex w-full items-center gap-3 px-4 rounded-[999px] border-2 box-border",
+    "flex w-full items-center gap-3 px-4 rounded-[999px] border-2 box-border cursor-pointer",
     checked ? "bg-[var(--color-violet-100)]" : "bg-[#FFF]",
     "border-[var(--color-slate-900)]",
     disabled && "opacity-60 cursor-not-allowed",
@@ -59,21 +57,39 @@ export function CheckListItem({
     checked && "line-through decoration-2"
   );
 
+  const handleBodyActivate = () => {
+    if (disabled) return;
+    if (href) router.push(href);
+    else onBodyClick?.();
+  };
+
   return (
     <div
-      className={containerClasses}
-      style={{
-        ...(styleWidth ? { width: styleWidth } : {}),
-        height: 50,
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      aria-disabled={disabled || undefined}
+      onClick={handleBodyActivate}
+      onKeyDown={(e) => {
+        if (disabled) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleBodyActivate();
+        }
       }}
+      className={containerClasses}
+      style={{ ...(styleWidth ? { width: styleWidth } : {}), height: 50 }}
     >
-      {/* 🔘 토글 버튼(왼쪽 원형) */}
+      {/* 🔘 토글 버튼(왼쪽 원형) — 루트 클릭과 분리: stopPropagation */}
       <button
         type="button"
         role="checkbox"
         aria-checked={checked}
         disabled={disabled}
-        onClick={() => !disabled && onToggle?.(!checked)}
+        onClick={(e) => {
+          e.stopPropagation(); // ✅ 부모 클릭 막기
+          if (!disabled) onToggle?.(!checked);
+        }}
+        onKeyDown={(e) => e.stopPropagation()} // 키보드 전파 방지
         className={clsx(
           "shrink-0 inline-flex items-center justify-center rounded-full",
           checked
@@ -88,32 +104,16 @@ export function CheckListItem({
         )}
       </button>
 
-      {/* 📝 본문(라벨) 클릭: href 우선, 없으면 onBodyClick */}
-      {href ? (
-        <Link href={href} className={labelClasses} title={label}>
-          <span
-            style={{
-              textDecorationColor: "var(--color-slate-800)",
-              lineHeight: "18px",
-            }}
-          >
-            {label}
-          </span>
-        </Link>
-      ) : (
-        <button
-          type="button"
-          className={labelClasses}
-          style={{
-            textDecorationColor: "var(--color-slate-800)",
-            lineHeight: "18px",
-          }}
-          onClick={() => !disabled && onBodyClick?.()}
-          aria-label="항목 상세"
-        >
-          {label}
-        </button>
-      )}
+      {/* 📝 라벨(본문) — 루트가 이미 클릭 가능하므로 단순 텍스트 */}
+      <span
+        className={labelClasses}
+        style={{
+          textDecorationColor: "var(--color-slate-800)",
+          lineHeight: "18px",
+        }}
+      >
+        {label}
+      </span>
     </div>
   );
 }

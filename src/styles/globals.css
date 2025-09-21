@@ -82,3 +82,9 @@ body {
   --breakpoint-md: 744px; /* tablet */
   --breakpoint-lg: 980px; /* desktop */
 }
+
+[contenteditable][data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8; /* slate-400 */
+  pointer-events: none;
+}

@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "./client";
-import type { CreateItemDto, Item, UpdateItemDto } from "../types";
+import type { CreateItemDto, Item } from "../types";
 
 /** 생성 */
 export function useCreateItem() {
@@ -22,15 +22,21 @@ export function useCreateItem() {
 /** 수정 */
 export function useUpdateItem() {
   const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (payload: UpdateItemDto) =>
-      api(`/items/${payload.id}`, {
+  return useMutation<
+    Item,
+    Error,
+    { id: number } & Partial<
+      Pick<Item, "name" | "memo" | "imageUrl" | "isCompleted">
+    >
+  >({
+    mutationFn: ({ id, ...rest }) =>
+      api(`/items/${id}`, {
         method: "PATCH",
-        body: JSON.stringify(payload),
+        body: JSON.stringify(rest), // ✅ body에서는 id 빠짐
       }) as Promise<Item>,
-    onSuccess: (data) => {
+    onSuccess: (updated) => {
       qc.invalidateQueries({ queryKey: ["items"] });
-      qc.invalidateQueries({ queryKey: ["item", data.id] });
+      qc.invalidateQueries({ queryKey: ["item", updated.id] });
     },
   });
 }
@@ -39,7 +45,7 @@ export function useUpdateItem() {
 export function useDeleteItem() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) =>
+    mutationFn: (id: string | number) =>
       api(`/items/${id}`, { method: "DELETE" }) as Promise<unknown>,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["items"] });

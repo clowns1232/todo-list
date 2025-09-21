@@ -12,6 +12,7 @@ import {
 } from "@/features/items/api/queries";
 import { CheckListItem } from "@/components/shared/check/CheckListItem";
 import { useCreateItem } from "@/features/items/api/mutations";
+import Link from "next/link";
 
 const LABEL_BY_TONE = {
   todo: IMAGES.TODO_LABEL,
@@ -102,9 +103,7 @@ export default function HomePage() {
                       toggleCompleted.mutate(it);
                     }}
                     disabled={toggleCompleted.isPending}
-
-                    // 상세로 이동하고 싶으면 아래처럼 래핑 가능
-                    // renderRight={() => <Link href={`/items/${it.id}`}>상세</Link>}
+                    href={`/items/${it.id}`}
                   />
                 ))}
               </div>
@@ -135,6 +134,7 @@ export default function HomePage() {
                       toggleCompleted.mutate(it);
                     }}
                     disabled={toggleCompleted.isPending}
+                    href={`/items/${it.id}`}
                   />
                 ))}
               </div>

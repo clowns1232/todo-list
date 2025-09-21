@@ -37,3 +37,11 @@ export const IMAGE_ALTS: Record<ImageName, string> = {
   searchbar: "검색창",
   image: "이미지",
 };
+
+export const IMAGE_PATHS: Record<ImageName, string> = (() => {
+  const map = {} as Record<ImageName, string>;
+  (Object.values(IMAGES) as ImageName[]).forEach((name) => {
+    map[name] = `/images/${name}.png`;
+  });
+  return map;
+})();

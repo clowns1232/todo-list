@@ -78,3 +78,45 @@ export function useToggleCompleted() {
     },
   });
 }
+// ===== PATCH: 수정(부분 업데이트)
+export function useUpdateItem() {
+  const qc = useQueryClient();
+  return useMutation<
+    Item,
+    Error,
+    {
+      id: number;
+      name?: string;
+      memo?: string | null;
+      imageUrl?: string | null;
+      isCompleted?: boolean;
+    }
+  >({
+    mutationFn: (payload) =>
+      api(`/items/${payload.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          name: payload.name,
+          memo: payload.memo,
+          imageUrl: payload.imageUrl,
+          isCompleted: payload.isCompleted,
+        }),
+      }) as Promise<Item>,
+    onSuccess: (updated) => {
+      qc.invalidateQueries({ queryKey: ["items"] });
+      qc.invalidateQueries({ queryKey: ["item", updated.id] });
+    },
+  });
+}
+
+// ===== DELETE: 삭제
+export function useDeleteItem() {
+  const qc = useQueryClient();
+  return useMutation<void, Error, number>({
+    mutationFn: (id) =>
+      api(`/items/${id}`, { method: "DELETE" }) as Promise<void>,
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["items"] });
+    },
+  });
+}
