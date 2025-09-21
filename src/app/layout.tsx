@@ -16,6 +16,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               width: 151,
               height: 40,
               priority: true,
+              imageMobile: {
+                name: IMAGES.LOGO,
+                width: 71,
+                height: 40,
+              },
             },
             href: "/",
           }}

@@ -1,4 +1,3 @@
-// src/components/shared/gnb/GNB.tsx
 "use client";
 
 import React, { useId, useState } from "react";
@@ -32,17 +31,24 @@ export type GnbAction =
       iconName?: IconName;
     };
 
+type BrandImage = {
+  name: ImageName;
+  width?: number;
+  height?: number;
+  className?: string;
+  priority?: boolean;
+  alt?: string;
+};
+
 type Brand =
   | ({ href?: string } & { text: string })
   | {
       href?: string;
-      image: {
-        name: ImageName;
-        width?: number;
-        height?: number;
-        className?: string;
-        priority?: boolean;
-        alt?: string;
+      image: BrandImage & {
+        /** ✅ 모바일 전용 이미지(선택) */
+        imageMobile?: BrandImage;
+        /** ✅ 어디서부터 모바일로 취급할지: "sm"(기본) | "md" */
+        mobileAt?: "sm" | "md";
       };
     };
 
@@ -52,14 +58,11 @@ type Props = {
   links?: GnbLink[];
   actions?: GnbAction[];
 
-  /** 태블릿(md)에서 노출할 링크 개수 (나머지는 lg~에서만 보임) */
   tabletVisibleLinks?: number;
 
-  /** sticky + 컨테이너 최대폭 */
   sticky?: boolean;
   maxW?: "xl" | "2xl" | "3xl" | "full";
 
-  /** 스타일 */
   bgClass?: string;
   borderClass?: string;
   textClass?: string;
@@ -73,9 +76,6 @@ const maxWMap = {
   full: "max-w-full",
 } as const;
 
-/** ----------------------------------------------------------------
- *  Component
- *  ---------------------------------------------------------------- */
 export function GNB({
   brand = { text: "do it;", href: "/" },
   links = [],
@@ -91,25 +91,63 @@ export function GNB({
   const [open, setOpen] = useState(false);
   const menuId = useId();
 
-  // 브랜드 렌더러
   const BrandNode = (() => {
     const href = "href" in brand && brand.href ? brand.href : "/";
+
+    if ("image" in brand) {
+      const { image } = brand;
+      const mobileAt = image.mobileAt ?? "sm";
+      const mobileOnCls = mobileAt === "md" ? "md:hidden" : "sm:hidden"; // 모바일에서 보일 것
+      const nonMobileCls =
+        mobileAt === "md" ? "hidden md:block" : "hidden sm:block"; // 태블릿/데탑에서 보일 것
+
+      return (
+        <Link href={href} className="flex items-center gap-2 shrink-0">
+          {/* 모바일용 이미지(있으면) */}
+          {image.imageMobile ? (
+            <>
+              <AppImage
+                name={image.imageMobile.name}
+                width={image.imageMobile.width ?? 24}
+                height={image.imageMobile.height ?? 24}
+                className={clsx(
+                  "block",
+                  mobileOnCls,
+                  image.imageMobile.className
+                )}
+                alt={image.imageMobile.alt}
+                priority={image.imageMobile.priority}
+              />
+              <AppImage
+                name={image.name}
+                width={image.width ?? 28}
+                height={image.height ?? 28}
+                className={clsx(nonMobileCls, image.className)}
+                alt={image.alt}
+                priority={image.priority}
+              />
+            </>
+          ) : (
+            // 모바일용이 없으면 기존 이미지 하나만
+            <AppImage
+              name={image.name}
+              width={image.width ?? 28}
+              height={image.height ?? 28}
+              className={image.className}
+              alt={image.alt}
+              priority={image.priority}
+            />
+          )}
+        </Link>
+      );
+    }
+
+    // 텍스트 로고
     return (
       <Link href={href} className="flex items-center gap-2 shrink-0">
-        {"image" in brand ? (
-          <AppImage
-            name={brand.image.name}
-            width={brand.image.width ?? 28}
-            height={brand.image.height ?? 28}
-            className={brand.image.className}
-            alt={brand.image.alt}
-            priority={brand.image.priority}
-          />
-        ) : (
-          <span className="text-[var(--text-lg)] font-[var(--font-weight-bold)] tracking-tight">
-            {brand.text}
-          </span>
-        )}
+        <span className="text-[var(--text-lg)] font-[var(--font-weight-bold)] tracking-tight">
+          {brand.text}
+        </span>
       </Link>
     );
   })();
@@ -211,20 +249,6 @@ export function GNB({
                 )
               )}
             </div>
-
-            {/* Mobile menu toggle */}
-            <button
-              type="button"
-              className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-slate-900)] bg-[var(--color-slate-100)]"
-              aria-controls={menuId}
-              aria-expanded={open}
-              aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-              onClick={() => setOpen((v) => !v)}
-            >
-              <span className="text-[var(--color-slate-900)] text-[12px] font-[var(--font-weight-bold)]">
-                {open ? "닫기" : "메뉴"}
-              </span>
-            </button>
           </div>
         </div>
       </div>

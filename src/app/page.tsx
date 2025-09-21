@@ -1,9 +1,7 @@
-// src/app/page.tsx
 "use client";
 
 import { useState } from "react";
 import { BasicButton } from "@/components/shared/button/BasicButton";
-import { CircleButton } from "@/components/shared/button/CircleButton";
 import { AppImage } from "@/components/shared/image/AppImage";
 import { IMAGES } from "@/components/shared/image";
 import { ICONS } from "@/components/shared/icon";
@@ -19,11 +17,9 @@ export default function HomePage() {
 
   return (
     <>
-      {/* === 상단: 가운데 정렬된 검색바 + 추가하기(별개 컴포넌트) === */}
       <section className="mx-auto w-full px-4">
         <div className="flex w-full items-center gap-3">
-          {/* 검색바: 남는 폭 전부 */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <SearchField
               value={q}
               onChange={setQ}
@@ -36,10 +32,9 @@ export default function HomePage() {
             />
           </div>
 
-          {/* 추가하기 버튼: 별개, 오른쪽에 배치 */}
-          <div className="hidden md:block">
+          <div className="shrink-0">
             <BasicButton
-              className="!h-14" // 검색바와 높이(56) 맞춤
+              className="!h-14 whitespace-nowrap"
               bg="bg-[var(--color-violet-600)]"
               textColor="text-white"
               borderColor="border-[var(--color-slate-900)]"
@@ -50,17 +45,15 @@ export default function HomePage() {
               shadowY={3}
               shadowBlur={0}
               shadowSpread={0}
-              // 너비는 자동; 고정하고 싶으면 width={168}
             >
-              추가하기
+              {/* 👇 모바일(<375px)에서는 텍스트 숨김, sm(≥375px)부터 보임 */}
+              <span className="hidden sm:inline">추가하기</span>
             </BasicButton>
           </div>
         </div>
       </section>
-
-      {/* === 빈 상태 블록 === */}
       <section className="mx-auto w-full px-4 py-10">
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           <EmptyBlock
             chipTone="todo"
             image={IMAGES.EMPTY_WRITING_LG}
@@ -73,35 +66,18 @@ export default function HomePage() {
           />
         </div>
       </section>
-
-      {/* 모바일 플로팅 + 버튼 (원하면 유지) */}
-      <div className="fixed bottom-6 right-6 md:hidden">
-        <CircleButton
-          ariaLabel="할 일 추가"
-          size={64}
-          bgColor="#0F172A80"
-          borderColor="var(--color-slate-900)"
-          borderWidth={3}
-          iconName={ICONS.PLUS_LG}
-          iconColor="#fff"
-        />
-      </div>
     </>
   );
 }
-
-/* ====================== 내부 컴포넌트 ====================== */
 
 function EmptyBlock({
   chipTone,
   image,
   message,
-  messageWidth = 177,
 }: {
   chipTone: keyof typeof LABEL_BY_TONE; // "todo" | "done"
   image: (typeof IMAGES)[keyof typeof IMAGES];
   message: string;
-  messageWidth?: number;
 }) {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl">
@@ -117,10 +93,7 @@ function EmptyBlock({
         alt=""
         className="mt-6 opacity-90"
       />
-      <p
-        className="mt-4 text-center ty-base-r text-[var(--color-slate-500)] whitespace-pre-line break-keep"
-        style={{ width: messageWidth }}
-      >
+      <p className="mt-4 text-center ty-base-r text-[var(--color-slate-500)] whitespace-pre-line break-keep">
         {message}
       </p>
     </div>

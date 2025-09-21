@@ -37,7 +37,6 @@ export function SearchField({
 }: Props) {
   const id = useId();
   const h = size === "lg" ? "h-14" : "h-12";
-  const isEmpty = value.trim().length === 0;
 
   const boxShadow = `${shadowX}px ${shadowY}px ${shadowBlur}px ${shadowSpread}px ${shadowColor}`;
 

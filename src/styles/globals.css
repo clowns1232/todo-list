@@ -75,3 +75,10 @@ body {
   line-height: 1;
   letter-spacing: 0;
 }
+
+@theme {
+  /* Breakpoints (min-width) */
+  --breakpoint-sm: 375px; /* mobile */
+  --breakpoint-md: 744px; /* tablet */
+  --breakpoint-lg: 980px; /* desktop */
+}
