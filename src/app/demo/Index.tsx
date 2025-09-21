@@ -1,9 +1,9 @@
 import React from "react";
 import { ColorDemo } from "./ColorDemo";
 import { IconDemo } from "./IconDemo";
-import ButtonDemo from "./ButtonDemo";
 import GnbDemo from "./GnbDemo";
 import ChecklistSearchDemo from "./ChecklistSearchDemo";
+import ButtonDemo from "./ButtonDemo";
 
 const Index = () => {
   return (

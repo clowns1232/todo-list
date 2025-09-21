@@ -161,7 +161,7 @@ function EmptyBlock({
   message: string;
 }) {
   return (
-    <>
+    <div className="w-full flex flex-col items-center justify-center text-center py-8">
       <AppImage
         name={image}
         width={240}
@@ -172,6 +172,6 @@ function EmptyBlock({
       <p className="mt-4 text-center ty-base-r text-[var(--color-slate-500)] whitespace-pre-line break-keep">
         {message}
       </p>
-    </>
+    </div>
   );
 }
